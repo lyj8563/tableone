@@ -79,8 +79,10 @@ ___
 summary(dt)
 myVars <- c("HGHT", "WGHT", "WSTC", "BMI", "HDL", "LDL")
 catVars <- c("Q_HBV_AG", "Q_SMK_YN")
+dt$Q_HBV_AG
 tab2 <- CreateTableOne(vars = myVars, factorVars = catVars, data = dt)
 print(tab2, showAllLevels = TRUE)
+CreateTableOne(data=dt)
 dt
 ```
 
@@ -99,7 +101,7 @@ ___
 # Export tableone
 ___
 
--> 여기서 테이블 csv나 다른 파일로 저장하는 방법 
+-> 여기서 테이블 csv나 다른 파일로 저장하는 방법 보여주기
 
 
 
