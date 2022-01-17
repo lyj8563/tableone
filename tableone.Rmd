@@ -1,0 +1,105 @@
+---
+title: "tableone 패키지 소개"
+author: "yujin"
+date: '2022 1 14 '
+output:
+  html_document: 
+    fig_height: 6
+    fig_width: 10
+    highlight: textmate
+    theme: cosmo
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+    df_print: paged
+---
+#### dt / reactable 패키지-> 테이블 간단하게 html로 보여주게끔 !!
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=F, fig.align = "center", message=F, warning=F)
+```
+
+# 시작하기 전에
+___
+
+본 자료는 데이터셋의 모든 변수를 하나의 테이블로 요약하는 방법에 대해 알아볼 것이다. **tableone** 패키지를 이용하면 효율적으로 논문에 들어갈 table1을 만들 수 있다. 
+
+
+
+# What is tableone?
+___
+
+`tableone`은 의학 연구 논문에서 볼 수 있는 table1을 구성하는 데 사용되는 패키지로, 한 테이블 내에 혼합된 범주형 변수와 연속형 변수를 모두 요약할 수 있고 사용법이 매우 간단하다는 장점이 있다.
+
+
+# Creating a tableone
+___
+
+**CreateTableOne()** 함수를 사용하여 테이블을 만들 수 있다. `fread`를 통해 데이터를 불러와 간단한 테이블을 만들어보자. 데이터는 09-15년 공단 건강검진 데이터에서 실습용으로 32 명을 뽑은 자료이며, 자세한 내용은  ["data/2교시 테이블 세부 레이아웃 소개(최신자료).pdf"](https://github.com/jinseob2kim/lecture-snuhlab/raw/master/data/2%EA%B5%90%EC%8B%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%84%B8%EB%B6%80%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EC%86%8C%EA%B0%9C(%EC%B5%9C%EC%8B%A0%EC%9E%90%EB%A3%8C).pdf) 를 참고하자.
+
+
+```{r, echo=T}
+# install.packages("tableone")
+library(tableone)
+library(data.table)
+library(curl)
+```
+
+```{r, echo=T}
+url <- "https://raw.githubusercontent.com/jinseob2kim/lecture-snuhlab/master/data/example_g1e.csv"
+dt <- fread(url,header=T)
+```
+
+```{r, echo=T}
+# create table1
+CreateTableOne(data=dt)
+```
+
+범주형 변수는 카운트 및/또는 백분율로 요약할 수 있습니다. 연속 변수는 "정상" 방식(수단 및 표준 편차) 또는 "비정상적" 방식(중앙값 및 간 범위)으로 요약할 수 있습니다.
+
+Categorical variables can be summarized as counts and/or percentages. Continuous variables can be summarized in the “normal” way (means and standard deviations) or “nonnormal” way (medians and interquartile ranges).
+
+# Argument customize
+___
+
+**CreateTableOne()** 함수를 사용하여 테이블을 만든 후, 세부 옵션을 지정할 수 있다. 주요 옵션은 다음과 같다.
+
+- `CreateTableOne`
+  - vars : 테이블에 들어갈 변수들
+  - factorVars : 범주형 변수들
+  - data : 데이터
+  - strata : 그룹 변수 지정
+  - includeNA : 범주형 변수에서 `NA`를 하나의 범주로 포함할 것인가?
+
+옵션에 대한 자세한 설명과 사용 예시는 뒤에서 다루도록 하겠다.
+
+```{r, echo=T}
+# create table1
+# "Q_PHX_DX_STK", "Q_PHX_DX_HTDZ", "Q_PHX_DX_HTN", "Q_PHX_DX_DM", "Q_PHX_DX_DLD"
+summary(dt)
+myVars <- c("HGHT", "WGHT", "WSTC", "BMI", "HDL", "LDL")
+catVars <- c("Q_HBV_AG", "Q_SMK_YN")
+tab2 <- CreateTableOne(vars = myVars, factorVars = catVars, data = dt)
+print(tab2, showAllLevels = TRUE)
+dt
+```
+
+
+## Show all levels 
+
+## Nonnormal
+
+## Show categorical or continuous variable only
+
+## Strata
+
+# print argument customize
+___
+
+# Export tableone
+___
+
+-> 여기서 테이블 csv나 다른 파일로 저장하는 방법 
+
+
+
